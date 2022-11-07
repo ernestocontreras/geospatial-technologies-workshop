@@ -19,4 +19,4 @@ A sample application to show how to interact with geospatial data sources using 
 ### Running Locally
 
 1.  `npm run dev` to start the development server.
-1.  `open http://localhost:3001/?webgl=true` in your browser.
+1.  open `http://localhost:3001/?webgl=true&reference=EPSG:4978` in your browser.

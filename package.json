@@ -9,7 +9,7 @@
     "transpile-to-js": "transpile-sample-to-js .",
     "transpile-declarations": "tsc --outDir ./transpiled --declaration --emitDeclarationOnly",
     "type-check": "tsc --noEmit",
-    "dev": "webpack serve"
+    "dev": "webpack serve -- --env is3D"
   },
   "keywords": [],
   "author": "ernesto.contrerash@gmail.com",
