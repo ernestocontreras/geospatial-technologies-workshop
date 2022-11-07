@@ -1,5 +1,6 @@
 /**
  * Layer for International Space Station.
+ * 
  * @see https://www.nasa.gov/mission_pages/station/main/index.html
  */
 
@@ -9,6 +10,7 @@ import { MemoryStore } from "@luciad/ria/model/store/MemoryStore";
 import { getReference } from "@luciad/ria/reference/ReferenceProvider";
 import { createPoint } from "@luciad/ria/shape/ShapeFactory";
 import { FeatureLayer } from "@luciad/ria/view/feature/FeatureLayer";
+import { FeaturePainter } from "@luciad/ria/view/feature/FeaturePainter";
 
 const GET_POSITION_API = 'https://api.wheretheiss.at/v1/satellites/25544';
 const CRS84_REFERENCE = getReference('CRS:84');
@@ -29,6 +31,28 @@ function getPosition() {
         });
 }
 
+/**
+ * @returns A paiter that uses an ISS 3D model.
+ * 
+ * @see https://www.nasa.gov/specials/3d/iss-viewer.html
+ */
+function createPainter() {
+    const painter = new FeaturePainter();
+
+    painter.paintBody = (geoCanvas, feature, shape, map, layer, state) => {
+        geoCanvas.drawIcon3D(shape, {
+            meshUrl: 'data/ISS_stationary.glb',
+            scale: {
+                x: 1000,
+                y: 1000,
+                z: 1000
+            }
+        });
+    };
+
+    return painter;
+}
+
 export function createIISLayer() {
     const model = new FeatureModel(new MemoryStore(), {
         reference: CRS84_REFERENCE
@@ -37,6 +61,7 @@ export function createIISLayer() {
     getPosition().then(feature => model.put(feature));
 
     return new FeatureLayer(model, {
-        label: "International Space Station"
+        label: "International Space Station",
+        painter: createPainter(),
     });
 }
