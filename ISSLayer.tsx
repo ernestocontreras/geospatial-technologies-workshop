@@ -8,7 +8,7 @@ import { Feature } from "@luciad/ria/model/feature/Feature";
 import { FeatureModel } from "@luciad/ria/model/feature/FeatureModel";
 import { MemoryStore } from "@luciad/ria/model/store/MemoryStore";
 import { getReference } from "@luciad/ria/reference/ReferenceProvider";
-import { createPoint } from "@luciad/ria/shape/ShapeFactory";
+import { createCircleByCenterPoint, createPoint } from "@luciad/ria/shape/ShapeFactory";
 import { FeatureLayer } from "@luciad/ria/view/feature/FeatureLayer";
 import { FeaturePainter } from "@luciad/ria/view/feature/FeaturePainter";
 
@@ -48,6 +48,18 @@ function createPainter() {
                 z: 1000
             }
         });
+
+        const footprintCircle = createCircleByCenterPoint(CRS84_REFERENCE,
+            shape as any,
+            feature.properties.footprint * 100);
+        geoCanvas.drawShape(footprintCircle, {
+            fill: {
+                color: "rgba(3, 160, 98, 0.3)"
+            },
+            stroke: {
+                color: "rgba(0, 255, 0, 0.6)"
+            }
+        })
     };
 
     return painter;
