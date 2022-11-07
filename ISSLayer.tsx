@@ -70,7 +70,8 @@ export function createIISLayer() {
         reference: CRS84_REFERENCE
     });
 
-    getPosition().then(feature => model.put(feature));
+    const updatePosition = () => getPosition().then(feature => model.put(feature));
+    setInterval(updatePosition, 3000);
 
     return new FeatureLayer(model, {
         label: "International Space Station",
