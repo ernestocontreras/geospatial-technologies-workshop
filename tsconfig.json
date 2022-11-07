@@ -1,0 +1,3 @@
+{
+  "extends": "@luciad/ria-sample-common/tsconfig.json"
+}
