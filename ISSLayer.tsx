@@ -8,9 +8,11 @@ import { Feature } from "@luciad/ria/model/feature/Feature";
 import { FeatureModel } from "@luciad/ria/model/feature/FeatureModel";
 import { MemoryStore } from "@luciad/ria/model/store/MemoryStore";
 import { getReference } from "@luciad/ria/reference/ReferenceProvider";
+import { Point } from "@luciad/ria/shape/Point";
 import { createCircleByCenterPoint, createPoint } from "@luciad/ria/shape/ShapeFactory";
 import { FeatureLayer } from "@luciad/ria/view/feature/FeatureLayer";
 import { FeaturePainter } from "@luciad/ria/view/feature/FeaturePainter";
+import { MapNavigator } from "@luciad/ria/view/MapNavigator";
 
 const GET_POSITION_API = 'https://api.wheretheiss.at/v1/satellites/25544';
 const CRS84_REFERENCE = getReference('CRS:84');
@@ -65,6 +67,20 @@ function createPainter() {
     return painter;
 }
 
+function setAutoNavigation(layer: FeatureLayer) {
+    layer.workingSet.on('WorkingSetChanged', (event, feature) => {
+        if (feature) {
+            const mapNavigator = layer.map?.mapNavigator as MapNavigator;
+            mapNavigator.pan({
+                targetLocation: feature.shape as Point,
+                animate: {
+                    duration: 1000
+                }
+            });
+        }
+    });
+}
+
 export function createIISLayer() {
     const model = new FeatureModel(new MemoryStore(), {
         reference: CRS84_REFERENCE
@@ -73,8 +89,12 @@ export function createIISLayer() {
     const updatePosition = () => getPosition().then(feature => model.put(feature));
     setInterval(updatePosition, 3000);
 
-    return new FeatureLayer(model, {
+    const layer = new FeatureLayer(model, {
         label: "International Space Station",
         painter: createPainter(),
     });
+
+    setAutoNavigation(layer);
+
+    return layer;
 }
