@@ -4,11 +4,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createArcGISLayer } from "./ArcGISLayer";
 import { createIISLayer } from "./ISSLayer";
+import { createRainViewerLayer } from "./RainviewerLayer";
 
 async function onInit(map: Map) {
     console.log("Map has been initialized!");
 
     map.layerTree.addChild(createArcGISLayer());
+    map.layerTree.addChild(createRainViewerLayer());
     map.layerTree.addChild(createIISLayer());
 }
 
