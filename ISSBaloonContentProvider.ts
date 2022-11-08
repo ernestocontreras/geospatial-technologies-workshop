@@ -26,7 +26,7 @@ export function balloonContentProvider(feature: any) {
 
                 return template
                     + `<li><b>Country:</b> ${countryCode}</li><br>`
-                    + `<img style="border: 0 none transparent;" height="200" width="150" src="${image}">`
+                    + `<img height="150" width="200" src="${image}">`
             }
 
             return template;
