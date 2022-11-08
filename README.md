@@ -2,6 +2,7 @@
 
 A sample application to show how to interact with geospatial data sources using LuciadRIA.
 
+<img src="thumb.png">
 
 ## 🚀 Getting started
 
